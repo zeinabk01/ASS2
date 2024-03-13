@@ -63,6 +63,19 @@ int main() {
     struct timeval start_time, end_time;
     gettimeofday(&start_time, NULL);
 
+    // Sequential bucket sort
+    for (int i = 0; i < NUM_BUCKETS; i++) {
+        sortBucket(i);
+    }
+
+    gettimeofday(&end_time, NULL);
+    double seq_time = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec) / 1000000.0;
+
+    printf("Sequential bucket sort took %f seconds\n", seq_time);
+
+    gettimeofday(&start_time, NULL);
+
+    // Parallel bucket sort
     parallelBucketSort();
 
     gettimeofday(&end_time, NULL);
@@ -70,7 +83,8 @@ int main() {
 
     printf("Parallel bucket sort took %f seconds\n", par_time);
 
-  double speedup = seq_time / par_time;
+    
+    double speedup = seq_time / par_time;
     double efficiency = speedup / omp_get_max_threads();
     printf("Speedup factor: %f\n", speedup);
     printf("Efficiency: %f\n", efficiency);
